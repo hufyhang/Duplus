@@ -6,8 +6,11 @@ import sys
 import operator
 import filesize
 
-def duplus(path=os.getenv('HOME'), nohidden=False):
-    sortPrint(iterateDict(path, nohidden))
+ARG_NOHIDDEN = '-nh'
+ARG_FROMSIZE = '-from'
+
+def duplus(path=os.getenv('HOME'), fromSize='0B', nohidden=False):
+    sortPrint(iterateDict(path, nohidden), filesize.bytes(fromSize))
 
 def iterateDict(path, nohidden=False):
     """iterate through a given path and return a path-size dictionary"""
@@ -30,13 +33,16 @@ def iterateDict(path, nohidden=False):
             dictionary[item] = calcFolderSize(ipath)
     return dictionary
 
-def sortPrint(dictionary):
+def sortPrint(dictionary, fromBytes):
     dic = sorted(dictionary.iteritems(), key=operator.itemgetter(1), reverse=True);
     total = 0;
     for item in dic:
         total += item[1]
     print 'Total: %s' % filesize.size(total)
     for item in dic:
+        # print '%d Vs. %d' % (item[1], fromBytes)
+        if item[1] < fromBytes:
+            continue
         print '%-5s ......... %s' % (filesize.size(item[1]), item[0])
 
 def calcFolderSize(path):
@@ -53,14 +59,19 @@ def calcFolderSize(path):
 
 if __name__ == '__main__':
     flag, nh = False, False
+    frm = '0B'
     for arg in sys.argv:
-        if arg == '-nh':
+        if arg == ARG_NOHIDDEN:
             nh = True
             flag = True
+        elif ARG_FROMSIZE in arg:
+            frm = arg.replace(ARG_FROMSIZE, '')
+            if len(frm) == 0:
+                frm = '0B'
 
     lastArg = sys.argv[len(sys.argv) - 1]
     if lastArg[0] == '-' or lastArg == 'duplus.py' or lastArg == './duplus.py':
-        duplus(nohidden = nh)
+        duplus(nohidden = nh, fromSize = frm)
     else:
-        duplus(lastArg, nohidden = nh)
+        duplus(lastArg, nohidden = nh, fromSize = frm)
 

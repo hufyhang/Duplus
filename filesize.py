@@ -108,3 +108,11 @@ def size(bytes, system=traditional):
             suffix = multiple
     return str(amount) + suffix
 
+def bytes(size, system=traditional):
+    """Convert size to bytes"""
+    for factor, suffix in system:
+        if suffix in size.upper():
+            break
+    return int(size[:(len(size)-len(suffix))])*factor
+
+
