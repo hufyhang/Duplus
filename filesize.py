@@ -99,20 +99,20 @@ def size(bytes, system=traditional):
     for factor, suffix in system:
         if bytes >= factor:
             break
-    amount = int(bytes/factor)
+    amount = bytes*1.00/factor
     if isinstance(suffix, tuple):
         singular, multiple = suffix
         if amount == 1:
             suffix = singular
         else:
             suffix = multiple
-    return str(amount) + suffix
+    return '%0.2f' % amount + suffix
 
 def bytes(size, system=traditional):
     """Convert size to bytes"""
     for factor, suffix in system:
         if suffix in size.upper():
             break
-    return int(size[:(len(size)-len(suffix))])*factor
+    return float(size[:(len(size)-len(suffix))])*factor
 
 
