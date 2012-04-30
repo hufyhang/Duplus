@@ -13,14 +13,19 @@ ARG_ALL = 3
 
 ARG_HELP = ['--help', '-?', '-help', '-h']
 ARG_NOHIDDEN = '-nh'
+ARG_ONLYHIDDEN = '-oh'
 ARG_FROMSIZE = '-from'
 
+NORMAL = 0
+NOHIDDEN = 1
+ONLYHIDDEN = 2
 
 USAGE = """Usage: python duplus.py [options] [directory]
 Example: 
     python duplus.py -nh -from20.12m ~/Desktop
-Available ptions:
+Available options:
     -nh : Ignore hidden files/directories.
+    -oh : Only show hidden files/directories.
     -fromXX : Only show the files/directoies from a minimum size. 'XX' stands for the size, e.g. 20k.
     -d : Only search directories.
     -f : Only search files.
@@ -29,10 +34,10 @@ Note:
 For the latest version, please see:
 <URL:https://github.com/hufyhang/Duplus>"""
 
-def duplus(path=os.getcwd(), fromSize='0B', nohidden=False, type=ARG_ALL):
+def duplus(path=os.getcwd(), fromSize='0B', nohidden=NORMAL, type=ARG_ALL):
     sortPrint(iterateDict(path, nohidden, type), filesize.bytes(fromSize))
 
-def iterateDict(path, nohidden=False, type=ARG_ALL):
+def iterateDict(path, nohidden=NORMAL, type=ARG_ALL):
     """iterate through a given path and return a path-size-type list"""
     if os.path.exists(path) is False:
         print 'Error: Directory does not exist.'
@@ -45,12 +50,16 @@ def iterateDict(path, nohidden=False, type=ARG_ALL):
         path = os.getcwd()
         listing = os.listdir(path)
 
+    print 'Checking disk use in %s......' % path
     resultList = []
     for item in listing:
         if item == '.' or item == '..':
             continue
-        if nohidden == True:
+        if nohidden == NOHIDDEN:
             if item[0] == '.':
+                continue
+        elif nohidden == ONLYHIDDEN:
+            if item[0] != '.':
                 continue
         ipath = os.path.join(path, item)
         if os.path.isfile(ipath) and (type == ARG_ALL or type == ARG_FILE[1]):
@@ -83,16 +92,20 @@ def calcFolderSize(path):
 
 
 if __name__ == '__main__':
-    flag, nh = False, False
+    flag, nh = False, NORMAL
     frm = '0B'
     typ = 0
+    index = 0
     for arg in sys.argv:
         # firstly, check if usage info is needed
         if arg in ARG_HELP:
             print USAGE
             sys.exit(0)
         elif arg == ARG_NOHIDDEN:
-            nh = True
+            nh = NOHIDDEN
+            flag = True
+        elif arg == ARG_ONLYHIDDEN:
+            nh = ONLYHIDDEN
             flag = True
         elif ARG_FROMSIZE in arg:
             frm = arg.replace(ARG_FROMSIZE, '')
