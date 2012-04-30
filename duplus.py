@@ -38,7 +38,13 @@ def iterateDict(path, nohidden=False, type=ARG_ALL):
         print 'Error: Directory does not exist.'
         sys.exit(0)
 
-    listing = os.listdir(path)
+    try:
+        listing = os.listdir(path)
+    except OSError:
+        # for alias in .bash_profile
+        path = os.getcwd()
+        listing = os.listdir(path)
+
     resultList = []
     for item in listing:
         if item == '.' or item == '..':

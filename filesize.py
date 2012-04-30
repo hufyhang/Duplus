@@ -113,6 +113,10 @@ def bytes(size, system=traditional):
     for factor, suffix in system:
         if suffix in size.upper():
             break
-    return float(size[:(len(size)-len(suffix))])*factor
-
+    result = 0.00
+    try:
+        result = float(size[:(len(size)-len(suffix))])*factor
+    except ValueError:
+        result = 0.00
+    return result
 
