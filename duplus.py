@@ -20,7 +20,7 @@ NORMAL = 0
 NOHIDDEN = 1
 ONLYHIDDEN = 2
 
-USAGE = """Usage: python duplus.py [options] [directory]
+USAGE = """Usage: python duplus.py [-options] [directory]
 Example: 
     python duplus.py -nh -from20.12m ~/Desktop
 Available options:
@@ -32,7 +32,7 @@ Available options:
 Note:
     If the 'directory' is not given, current working directory will be taken.
 For the latest version, please see:
-<URL:https://github.com/hufyhang/Duplus>"""
+    https://github.com/hufyhang/Duplus"""
 
 def duplus(path=os.getcwd(), fromSize='0B', nohidden=NORMAL, type=ARG_ALL):
     sortPrint(iterateDict(path, nohidden, type), filesize.bytes(fromSize))
@@ -92,6 +92,7 @@ def calcFolderSize(path):
 
 
 if __name__ == '__main__':
+    # TODO: Consider if 'flag' can be removed
     flag, nh = False, NORMAL
     frm = '0B'
     typ = 0
