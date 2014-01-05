@@ -1,5 +1,15 @@
 #!/usr/bin/python
-# duplus -- disk usage plus in Python
+#=============================================================================
+#     FileName: duplus.py
+#         Desc: Disk use checker plus
+#       Author: Feifei Hang
+#        Email: l.daniel.hung@gmail.com
+#     HomePage: http://feifeihang.blog.com
+#      Version: 0.0.1
+#   LastChange: 2012-05-22 23:20:19
+#      History:
+#=============================================================================
+
 
 import os
 import sys
@@ -8,16 +18,16 @@ import filesize
 
 
 ARG_FILE = ('-f', 1)
-ARG_DIR = ('-d', 2)
-ARG_ALL = 3
+ARG_DIR  = ('-d', 2)
+ARG_ALL  = 3
 
-ARG_HELP = ['--help', '-?', '-help', '-h']
-ARG_NOHIDDEN = '-nh'
+ARG_HELP       = ['--help', '-?', '-help', '-h']
+ARG_NOHIDDEN   = '-nh'
 ARG_ONLYHIDDEN = '-oh'
-ARG_FROMSIZE = '-from'
+ARG_FROMSIZE   = '-from'
 
-NORMAL = 0
-NOHIDDEN = 1
+NORMAL     = 0
+NOHIDDEN   = 1
 ONLYHIDDEN = 2
 
 USAGE = """Usage: python duplus.py [-options] [directory]
