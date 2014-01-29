@@ -31,7 +31,7 @@ NOHIDDEN   = 1
 ONLYHIDDEN = 2
 
 USAGE = """Usage: python duplus.py [-options] [directory]
-Example: 
+Example:
     python duplus.py -nh -from20.12m ~/Desktop
 Available options:
     -nh : Ignore hidden files/directories.
@@ -126,7 +126,7 @@ if __name__ == '__main__':
             typ += ARG_FILE[1]
         elif arg == ARG_DIR[0]:
             typ += ARG_DIR[1]
-    
+
     lastArg = sys.argv[len(sys.argv) - 1]
     if typ == 0:
         typ = ARG_ALL
